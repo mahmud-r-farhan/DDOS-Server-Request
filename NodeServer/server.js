@@ -9,6 +9,7 @@ let logs = [];
 if (fs.existsSync(logFile)) {
     try {
         logs = JSON.parse(fs.readFileSync(logFile, 'utf-8'));
+        requestCount = logs.length; // Set requestCount based on existing logs
     } catch (err) {
         console.error("❌ Failed to parse existing logs. Starting fresh.");
         logs = [];
@@ -16,6 +17,24 @@ if (fs.existsSync(logFile)) {
 }
 
 const server = http.createServer((req, res) => {
+    // Handle API endpoint for fetching logs
+    if (req.method === 'GET' && req.url === '/api/logs') {
+        try {
+            // Read logs.json file
+            const logsData = fs.readFileSync(logFile, 'utf-8');
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(logsData);
+            console.log('📤 Served logs.json via /api/logs');
+            return;
+        } catch (err) {
+            console.error('❌ Error reading logs.json:', err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Failed to fetch logs' }));
+            return;
+        }
+    }
+
+    // Handle other requests (existing functionality)
     requestCount++;
 
     const forwardedFor = req.headers['x-forwarded-for'];
@@ -49,12 +68,12 @@ const server = http.createServer((req, res) => {
         if (err) console.error('❌ Error writing to log file:', err);
     });
 
-    // Response
+    // Response for non-API requests
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`Hello! You are visitor #${requestCount}\n`);
 });
 
-const PORT = 3000;
+const PORT = 5000;
 server.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
