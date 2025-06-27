@@ -1,0 +1,30 @@
+🌐 Advanced Load Tester (Random Methods & Proxy Support)
+Enter the target URL [Default: http://localhost:3000]: https://example.com
+How many requests to send? [Default: 10]: 20
+Use random request methods (random/fixed) [Default: random]: fixed
+Request method? (GET/POST/PUT) [Default: GET]: POST
+Add custom headers? (y/n) [Default: n]: y
+Enter headers as key:value (blank line to stop):
+> Authorization: Bearer xyz123
+> Content-Type: application/json
+> 
+Send JSON body with POST? (y/n) [Default: n]: y
+Enter JSON data (e.g. {"name": "Farhan"}): {"user": "test_user"}
+Use proxy? (y/n) [Default: n]: y
+Enter proxy (e.g., http://proxy:port): http://proxy.example.com:8080
+Concurrency level? (e.g. 5 means 5 threads) [Default: 5]: 10
+
+🚀 Sending 20 request(s) to https://example.com using 10 thread(s)...
+   Method: POST
+   Proxy: http://proxy.example.com:8080
+Processing: 100%|██████████| 20/20 [00:01<00:00, 15.00it/s]
+
+📁 Logs saved to 'request_log.csv' and 'request_log.json'
+📈 Chart saved as 'response_chart.png'
+
+📊 Request Method Summary:
+   POST: 20 request(s)
+
+🌍 Country-wise Request Summary:
+   Unknown: 20 request(s)
+✅ Done.
